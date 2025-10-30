@@ -1,0 +1,31 @@
+    body { font-family: sans-serif; margin: 20px; }
+    .tabs{position: fixed; top: 100px; left: 10px; transform: translateY(-50%); display: flex; flex-direction: column; gap: 10px;}
+    .tab { display: inline-block; padding: 10px 20px; margin-right: 5px; background: #eee; cursor: pointer; }
+    .tab.active { background: #ccc; }
+    .main.content{margin-left: 120px; }
+    .screen { display: none; margin-top: 20px; }
+    .screen.active { display: block; }
+    table { border-collapse: collapse; width: 100%; }
+    td, th { border: 1px solid #999; padding: 4px; text-align: center; }
+    .keypad button { width: 40px; height: 40px; margin: 2px; font-size: 18px; }
+    .order { width: 60px; height: 40px; font-size: 20px; }
+    input[type='text'] { width: 60px; }
+    .controls button { margin: 5px; }
+    .faded { opacity: 0.4; }
+    .order-table { width: 30%; margin: 2px; } 
+    /*.history-table {width: 60%; margin: 2px;} */
+    .total-table {width: 40%; margin: 2px;}
+    .order-container { display: flex; align-items: flex-start; gap: 30px; /* 表とキーパッドの間隔 */}
+    .delete-button-container {margin-top: 60px;}
+        #summaryTables {
+    display: flex;
+    justify-content: flex-start;
+    gap: 40px;
+    flex-wrap: wrap;
+    }
+
+    .summary-wrapper {
+    flex: 1 1 50%;
+    min-width: 400px;
+    }
+
