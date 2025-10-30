@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+
+  <head>
+
+    <meta charset="UTF-8" />
+
+    <title>注文管理システム</title>
+
+    <link rel="stylesheet" type="text/css" href="style.css" /> 
+
+  </head>
+
+
+
+  <body>
+
+    <!--Java Script-->
+
+    <script type="text/javascript" src="./main.js"></script>
+
+    <script type="text/javascript" src="./submitOrder.js"></script>
+
+    <script type="text/javascript" src="./renderSummaryFromOrders.js"></script>
+
+    <script type="text/javascript" src="./reroad.js"></script>
+
+
+
+      <div class="tabs">
+
+        <div class="tab active" onclick="switchTab('account')">会計</div>
+
+        <div class="tab" onclick="switchTab('history')">注文履歴</div>
+
+        <div class="tab" onclick="switchTab('summary')">集計</div>
+
+      </div>
+
+    
+
+
+
+  <!--------------------------------------------------------------------------->
+
+  <!--会計画面------------------------------------------------------------------>
+
+  <!--------------------------------------------------------------------------->
+
+      <div class="main content">
+
+        <div class="screen active" id="account">
+
+          <p>人数: <input type="text" id="people" value="1" readonly onclick="setTargetInput('people')" /></p>
+
+
+
+      <p>注文:</p>
+
+
+
+     <div class="order-container">
+
+        <div class="order-table">
+
+          <table>
+
+            <tr><th>商品</th><th>個数</th><th>単価</th></tr>
+
+            <tr>
+
+              <td>シュガー</td>
+
+              <td><input type="text" id="sugarCount" readonly onclick="setTargetInput('sugarCount')" /></td>
+
+              <td><input type="text" id="sugarPrice" value="300" readonly onclick="setTargetInput('sugarPrice')" /></td>
+
+            </tr>
+
+            <!-- きなこ -->
+
+            <tr>
+
+              <td>きなこ</td>
+
+              <td><input type="text" id="kinakoCount" readonly onclick="setTargetInput('kinakoCount')" /></td>
+
+              <td><input type="text" id="kinakoPrice" value="300" readonly onclick="setTargetInput('kinakoPrice')" /></td>
+
+            </tr>
+
+            <!-- ココア -->
+
+            <tr>
+
+              <td>ココア</td>
+
+              <td><input type="text" id="cocoaCount" readonly onclick="setTargetInput('cocoaCount')" /></td>
+
+              <td><input type="text" id="cocoaPrice" value="300" readonly onclick="setTargetInput('cocoaPrice')" /></td>
+
+            </tr>
+
+            <!-- コンソメスープ -->
+
+            <tr>
+
+              <td>コンソメスープ</td>
+
+              <td><input type="text" id="soupCount" readonly onclick="setTargetInput('soupCount')" /></td>
+
+              <td><input type="text" id="soupPrice" value="150" readonly onclick="setTargetInput('soupPrice')" /></td>
+
+            </tr>
+
+            <!-- パンとスープのセット 
+
+            <tr>
+
+              <td>セット</td>
+
+              <td><input type="text" id="setCount" readonly onclick="setTargetInput('setCount')" /></td>
+
+              <td><input type="text" id="setPrice" value="400" readonly onclick="setTargetInput('setPrice')" /></td>
+
+            </tr> -->
+
+            <!-- セットの中身（パンの種類選択） -->
+
+            <tr>
+
+              <td colspan="3">
+
+                  <button onclick="addSetItem()">セットを追加</button>
+
+                  <input type="text" id="setPrice" value="400" readonly onclick="setTargetInput('setPrice')"/> </td>
+
+            </tr>
+
+            <tbody id="setItemsContainer">
+
+                </tbody>
+
+          </table>
+
+        </div>
+
+
+
+        <div class="keypad">
+
+          <div>
+
+            <button onclick="appendDigit('1')">1</button>
+
+            <button onclick="appendDigit('2')">2</button>
+
+            <button onclick="appendDigit('3')">3</button>
+
+          </div>
+
+          <div>
+
+            <button onclick="appendDigit('4')">4</button>
+
+            <button onclick="appendDigit('5')">5</button>
+
+            <button onclick="appendDigit('6')">6</button>
+
+          </div>
+
+          <div>
+
+            <button onclick="appendDigit('7')">7</button>
+
+            <button onclick="appendDigit('8')">8</button>
+
+            <button onclick="appendDigit('9')">9</button>
+
+          </div>
+
+          <div>
+
+            <button onclick="clearCurrentInput()">C</button>
+
+            <button onclick="appendDigit('0')">0</button>
+
+            <button onclick="calculateTotal()" style="background-color: #ffa9a9; border: solid thin; border-radius: 3px;">OK</button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+    <!--<div class="controls">
+
+      <button onclick="calculateTotal()">完了</button>
+
+    </div> -->
+
+      <p><font size="5">合計: <span id="total">0</span>円</font></p>
+
+      <div><button class="order" onclick="submitOrder()">注文</button></div>
+
+      <div class="delete-button-container">
+
+        <button onclick="clearHistory()">履歴を削除する</button>
+
+      </div>
+
+    </div>
+
+
+
+  <!--------------------------------------------------------------------------->
+
+  <!--注文履歴画面------------------------------------------------------------------>
+
+  <!--------------------------------------------------------------------------->
+
+
+
+    <div class="screen" id="history">
+
+      <table id="historyTable" class="history-table">
+
+        <tr><th>番号</th><th>種類</th><th>個数</th><th>操作</th></tr>
+
+      </table>
+
+    </div>
+
+
+
+  <!--------------------------------------------------------------------------->
+
+  <!--集計画面------------------------------------------------------------------>
+
+  <!--------------------------------------------------------------------------->
+
+    <div class="screen" id="summary">
+
+  <p>客数: <span id="totalPeople">0</span> 名</p>
+
+
+
+  <div id="summaryTables">
+
+    
+
+    <!-- 単品の表 -->
+
+    <div>
+
+      <h3>単品注文</h3>
+
+      <table class="total-table" id="singleItemSummary">
+
+        <thead>
+
+          <tr>
+
+            <th>種類</th><th>総個数</th><th>単価</th><th>個数</th><th>価格</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <!-- JSで挿入 -->
+
+        </tbody>
+
+        <tfoot>
+
+          <tr>
+
+            <td>合計</td><td id="totalSingleQty">0</td><td colspan="2"></td><td id="totalSinglePrice">0</td>
+
+          </tr>
+
+        </tfoot>
+
+      </table>
+
+    </div>
+
+
+
+    <!-- セット注文の表 -->
+
+    <div>
+
+      <h3>セット注文</h3>
+
+      <table class="total-table" id="setSummary">
+
+        <thead>
+
+          <tr>
+
+            <th>セット内容</th><th>総個数</th><th>単価</th><th>個数</th><th>価格</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <!-- JSで挿入 -->
+
+        </tbody>
+
+        <tfoot>
+
+          <tr>
+
+            <td>合計</td><td id="totalSetQty">0</td><td colspan="2"></td><td id="totalSetPrice">0</td>
+
+          </tr>
+
+        </tfoot>
+
+      </table>
+
+    </div>
+
+
+
+  </div>
+
+</div>
+
+  </body>
+
+</html>
+
